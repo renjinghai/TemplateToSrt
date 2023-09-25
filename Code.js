@@ -1,17 +1,17 @@
-const StartHeader = "start";
-const EndHeader = "end";
-const YWonAPointCol = "Y得分";
-const OWonAPointCol = "O得分";
-const CategoryHeader = "Category";
-const ServeCol = 0;
-const YScoreCol = 1;
-const OScoreCol = 2;
-const LastRow = 40;
+const START_HEADER = "start";
+const END_HEADER = "end";
+const YOYO_WON_A_POINT_COL = "Y得分";
+const OPPONENT_WON_A_POINT_COL = "O得分";
+const CATEGORY_HEADER = "Category";
+const SERVE_COL = 0;
+const YOYO_SCORE_COL = 1;
+const OPPONENT_SCORE_COL = 2;
+const LAST_ROW = 40;
 const YOYO = "Yueran"
 const OPPONENT = "Opponent";
-const StartOfTheDay = new Date("Sat Dec 30 00:00:00 GMT-08:00 1899");
-const EndOfTheDay = new Date("Sat Dec 30 00:59:00 GMT-08:00 1899");
-const SlidesID = "1Pa6jWcdUNgISV_R2eVddov0qz1IkMm2zWDI7L0-DNas";
+const START_OF_THE_DAY = new Date("Sat Dec 30 00:00:00 GMT-08:00 1899");
+const END_OF_THE_DAY = new Date("Sat Dec 30 00:59:00 GMT-08:00 1899");
+const SLIDES_ID = "1Pa6jWcdUNgISV_R2eVddov0qz1IkMm2zWDI7L0-DNas";
 
 function myFunction() {
   var slide = deleteAndAppendSlide();
@@ -26,33 +26,32 @@ function myFunction() {
   var dspDoc = DocumentApp.create(dspDocName);
   Logger.log(dspDoc.getName());
 
-  var startCol = getCol(sheet, StartHeader);
-  var endCol = getCol(sheet, EndHeader);
-  var categoryCol = getCol(sheet, CategoryHeader);
+  var startCol = getCol(sheet, START_HEADER);
+  var endCol = getCol(sheet, END_HEADER);
+  var categoryCol = getCol(sheet, CATEGORY_HEADER);
 
   var data = sheet.getDataRange().getValues();
   var srtCounter = 0;
 
   dspDoc.getBody().appendParagraph("Timecodes");
-  //dsp(dspDoc, StartOfTheDay, "Warm up");
   var ball = 0;
   // skip header
   for (var i = 1; data[i][startCol] && i < data.length; i++) {
     var start = data[i][startCol];
     var end = data[i][endCol];
     var category = data[i][categoryCol];
-    var yScore = data[i][YScoreCol];
-    var oScore = data[i][OScoreCol];
+    var yScore = data[i][YOYO_SCORE_COL];
+    var oScore = data[i][OPPONENT_SCORE_COL];
 
-    var prevYScore = data[i - 1][YScoreCol];
-    var prevOScore = data[i - 1][OScoreCol];
+    var prevYScore = data[i - 1][YOYO_SCORE_COL];
+    var prevOScore = data[i - 1][OPPONENT_SCORE_COL];
 
     var isTheLastBall = !(data[i + 1][startCol]);
-    var nexStart = isTheLastBall ? EndOfTheDay : data[i + 1][startCol];
+    var nexStart = isTheLastBall ? END_OF_THE_DAY : data[i + 1][startCol];
 
     //Description
     ball++;
-    dsp(dspDoc, i == 1 ? StartOfTheDay : start, `Ball${ball} ${category}`);
+    dsp(dspDoc, i == 1 ? START_OF_THE_DAY : start, `Ball${ball} ${category}`);
     //dsp(dspDoc, end, `Ball${ball} interval`);
 
     // subtitle
@@ -155,13 +154,13 @@ function getCol(sheet, header) {
 function onEdit(e) {
   var sheet = SpreadsheetApp.getActiveSheet();
   var data = sheet.getDataRange().getValues();
-  var yScore = data[LastRow][YScoreCol];
-  var oScore = data[LastRow][OScoreCol];
+  var yScore = data[LAST_ROW][YOYO_SCORE_COL];
+  var oScore = data[LAST_ROW][OPPONENT_SCORE_COL];
   Logger.log("yScore:" + yScore);
   Logger.log("oScore" + oScore);
   var nextRow = e.range.getRow();
   Logger.log("curRow:" + nextRow);
-  var ballNumberAndServer = data[nextRow][ServeCol];
+  var ballNumberAndServer = data[nextRow][SERVE_COL];
   var server = ballNumberAndServer.at(-1);
   var ballNumber = ballNumberAndServer.slice(0, -1);
   Logger.log(server);
@@ -184,8 +183,8 @@ function onEdit(e) {
 
   var curRow = nextRow - 1;
   Logger.log(data[curRow]);
-  var yWonAPointCol = getCol(sheet, YWonAPointCol);
-  var oWonAPointCol = getCol(sheet, OWonAPointCol);
+  var yWonAPointCol = getCol(sheet, YOYO_WON_A_POINT_COL);
+  var oWonAPointCol = getCol(sheet, OPPONENT_WON_A_POINT_COL);
   var yWonAPoint = data[curRow][yWonAPointCol];
   var yWonAPointSymbol = toWonAPointSymbol(yWonAPoint);
   var oWonAPoint = data[curRow][oWonAPointCol];
@@ -229,12 +228,12 @@ function display(slide, text, left, top, width, height, fontSize) {
 }
 
 function getSlide() {
-  const presentation = SlidesApp.openById(SlidesID);
+  const presentation = SlidesApp.openById(SLIDES_ID);
   return presentation.getSlides()[0];
 }
 
 function deleteAndAppendSlide() {
-  const presentation = SlidesApp.openById(SlidesID);
+  const presentation = SlidesApp.openById(SLIDES_ID);
   presentation.getSlides().pop().remove();
   return presentation.appendSlide();
 }
