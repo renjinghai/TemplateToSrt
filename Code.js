@@ -194,7 +194,10 @@ function onEdit(e) {
   Logger.log("timeStampCol:" + timeStampCol);
   Logger.log("e.range.Col:" + e.range.getColumn());
   if (e.range.getColumn() == categoryCol + 1) {
-    sheet.getRange(nextRow, timeStampCol + 1).setValue(new Date());
+    var timeStampCell = sheet.getRange(nextRow, timeStampCol + 1);
+    if (timeStampCell.isBlank()) {
+      timeStampCell.setValue(new Date());
+    }
   }
 
   var yWonAPointCol = getCol(sheet, YOYO_WON_A_POINT_HEADER);
