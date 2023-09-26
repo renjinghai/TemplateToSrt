@@ -4,7 +4,7 @@ const END_HEADER = "end";
 const YOYO_WON_A_POINT_HEADER = "Y得分";
 const OPPONENT_WON_A_POINT_HEADER = "O得分";
 const CATEGORY_HEADER = "Category";
-const TIME_STAMP = "time stamp";
+const TIME_STAMP_HEADER = "time stamp";
 
 // columns
 const SERVE_COL = 0;
@@ -188,8 +188,15 @@ function onEdit(e) {
 
   var curRow = nextRow - 1;
   Logger.log(data[curRow]);
-  var timeStampCol = getCol(sheet, TIME_STAMP);
-  sheet.getRange(curRow, timeStampCol).setValue(new Date());
+  var timeStampCol = getCol(sheet, TIME_STAMP_HEADER);
+  var categoryCol = getCol(sheet, CATEGORY_HEADER);
+  Logger.log("categoryCol:" + categoryCol);
+  Logger.log("timeStampCol:" + timeStampCol);
+  Logger.log("e.range.Col:" + e.range.getColumn());
+  if (e.range.getColumn() == categoryCol + 1) {
+    sheet.getRange(nextRow, timeStampCol + 1).setValue(new Date());
+  }
+
   var yWonAPointCol = getCol(sheet, YOYO_WON_A_POINT_HEADER);
   var oWonAPointCol = getCol(sheet, OPPONENT_WON_A_POINT_HEADER);
   var yWonAPoint = data[curRow][yWonAPointCol];
@@ -254,5 +261,5 @@ function toWonAPointSymbol(point) {
 }
 
 function isOdd(value) {
-    return (value % 2)
+  return (value % 2)
 }
