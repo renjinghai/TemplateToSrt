@@ -1,7 +1,7 @@
 const START_HEADER = "start";
 const END_HEADER = "end";
-const YOYO_WON_A_POINT_COL = "Y得分";
-const OPPONENT_WON_A_POINT_COL = "O得分";
+const YOYO_WON_A_POINT_HEADER = "Y得分";
+const OPPONENT_WON_A_POINT_HEADER = "O得分";
 const CATEGORY_HEADER = "Category";
 const SERVE_COL = 0;
 const YOYO_SCORE_COL = 1;
@@ -183,8 +183,8 @@ function onEdit(e) {
 
   var curRow = nextRow - 1;
   Logger.log(data[curRow]);
-  var yWonAPointCol = getCol(sheet, YOYO_WON_A_POINT_COL);
-  var oWonAPointCol = getCol(sheet, OPPONENT_WON_A_POINT_COL);
+  var yWonAPointCol = getCol(sheet, YOYO_WON_A_POINT_HEADER);
+  var oWonAPointCol = getCol(sheet, OPPONENT_WON_A_POINT_HEADER);
   var yWonAPoint = data[curRow][yWonAPointCol];
   var yWonAPointSymbol = toWonAPointSymbol(yWonAPoint);
   var oWonAPoint = data[curRow][oWonAPointCol];
