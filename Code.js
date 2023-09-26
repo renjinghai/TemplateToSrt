@@ -1,11 +1,16 @@
+// headers
 const START_HEADER = "start";
 const END_HEADER = "end";
 const YOYO_WON_A_POINT_HEADER = "Y得分";
 const OPPONENT_WON_A_POINT_HEADER = "O得分";
 const CATEGORY_HEADER = "Category";
+const TIME_STAMP = "time stamp";
+
+// columns
 const SERVE_COL = 0;
 const YOYO_SCORE_COL = 1;
 const OPPONENT_SCORE_COL = 2;
+
 const LAST_ROW = 40;
 const YOYO = "Yueran"
 const OPPONENT = "Opponent";
@@ -183,6 +188,8 @@ function onEdit(e) {
 
   var curRow = nextRow - 1;
   Logger.log(data[curRow]);
+  var timeStampCol = getCol(sheet, TIME_STAMP);
+  sheet.getRange(curRow, timeStampCol).setValue(new Date());
   var yWonAPointCol = getCol(sheet, YOYO_WON_A_POINT_HEADER);
   var oWonAPointCol = getCol(sheet, OPPONENT_WON_A_POINT_HEADER);
   var yWonAPoint = data[curRow][yWonAPointCol];
