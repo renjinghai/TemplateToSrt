@@ -104,7 +104,10 @@ function getSlide() {
 
 function deleteAndAppendSlide() {
     const presentation = SlidesApp.openById(SLIDES_ID);
-    presentation.getSlides().pop().remove();
+    var slides = presentation.getSlides();
+    for (var i = 0; i < slides.length; i++) {
+        slides[i].remove()
+    }
     return presentation.appendSlide();
 }
 
