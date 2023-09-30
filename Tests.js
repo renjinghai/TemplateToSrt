@@ -21,6 +21,12 @@ function doGet() {
     assert.equal(formatDateHMS(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899")), "12:34:56", "two digits");
   });
 
+  Qunit.test("formatDateMS", function (assert) {
+    assert.equal(formatDateMS(new Date("Sat Dec 30 00:00:00 GMT-08:00 1899")), "00:00", "all zeros");
+    assert.equal(formatDateMS(new Date("Sat Dec 30 01:02:03 GMT-08:00 1899")), "02:03", "single digits");
+    assert.equal(formatDateMS(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899")), "34:56", "two digits");
+  });
+
   Qunit.start();
   return QUnitGS2.getHtml();
 }

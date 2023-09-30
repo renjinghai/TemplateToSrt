@@ -66,10 +66,12 @@ function myFunction() {
   }
 }
 
+// no padZero. It is used for srt.
 function formatDateHMS(date) {
   return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
 
+// with padZero. Padding is required by YouTube chapter.
 function formatDateMS(date) {
   var paddedMinute = padZero(date.getMinutes(), 2);
   var paddedSecond = padZero(date.getSeconds(), 2);
