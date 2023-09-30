@@ -1,8 +1,5 @@
-
+// generate srt and dsp files from the active sheet.
 function myFunction() {
-    var slide = deleteAndAppendSlide();
-    display(slide, "Step 1: onEdit handler", 50, 50, 600, 50, 40);
-    display(slide, "Step 2: iPad never auto-lock", 50, 100, 600, 50, 40);
     var sheet = SpreadsheetApp.getActiveSheet();
     var docName = `${SpreadsheetApp.getActiveSpreadsheet().getName()}_${sheet.getName()}`;
     var srtDocName = `${docName}_srt`;

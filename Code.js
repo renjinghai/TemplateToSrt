@@ -18,6 +18,13 @@ const START_OF_THE_DAY = new Date("Sat Dec 30 00:00:00 GMT-08:00 1899");
 const END_OF_THE_DAY = new Date("Sat Dec 30 00:59:00 GMT-08:00 1899");
 const SLIDES_ID = "1Pa6jWcdUNgISV_R2eVddov0qz1IkMm2zWDI7L0-DNas";
 
+
+function initSlide() {
+  var slide = deleteAndAppendSlide();
+  display(slide, "Step 1: onEdit handler", 50, 50, 600, 50, 40);
+  display(slide, "Step 2: iPad never auto-lock", 50, 100, 600, 50, 40);
+}
+
 function getCol(sheet, header) {
   const values = sheet.getRange(1, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
   const headers = values.shift();
