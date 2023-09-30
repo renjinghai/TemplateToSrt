@@ -15,6 +15,12 @@ function doGet() {
     assert.equal(padZero(8, 2), "08", "1 digit one prefix zero");
   });
 
+  Qunit.test("formatDateHMS", function (assert) {
+    assert.equal(formatDateHMS(new Date("Sat Dec 30 00:00:00 GMT-08:00 1899")), "0:0:0", "all zeros");
+    assert.equal(formatDateHMS(new Date("Sat Dec 30 01:02:03 GMT-08:00 1899")), "1:2:3", "single digits");
+    assert.equal(formatDateHMS(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899")), "12:34:56", "two digits");
+  });
+
   Qunit.start();
   return QUnitGS2.getHtml();
 }
