@@ -54,15 +54,14 @@ function myFunction() {
     var isTheLastBall = !(data[i + 1][startCol]);
     var nexStart = isTheLastBall ? END_OF_THE_DAY : data[i + 1][startCol];
 
-    //Description
+    //Chapter in description
     ball++;
-    dsp(dspDoc, i == 1 ? START_OF_THE_DAY : start, `Ball${ball} ${category}`);
-    //dsp(dspDoc, end, `Ball${ball} interval`);
+    var chapterStr = formatChapterStr(i == 1 ? START_OF_THE_DAY : start, `Ball${ball} ${category}`);
+    dspDoc.getBody().appendParagraph(chapterStr);
 
     // subtitle
     srtGame(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
     srtInterval(++srtCounter, srtDoc, end, isTheLastBall, nexStart, yScore, oScore);
-
   }
 }
 
@@ -83,10 +82,10 @@ function padZero(number, totalLength) {
   return number.toString().padStart(totalLength, '0');
 }
 
-function dsp(doc, date, text) {
+// The format is "minute:second - text".
+function formatChapterStr(date, text) {
   var timeString = formatDateMS(date);
-  var dspString = `${timeString} - ${text}`;
-  doc.getBody().appendParagraph(dspString);
+  return `${timeString} - ${text}`;
 }
 
 function srtGame(counter, srtDoc, start, end, yScore, oScore) {

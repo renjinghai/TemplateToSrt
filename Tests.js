@@ -27,6 +27,10 @@ function doGet() {
     assert.equal(formatDateMS(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899")), "34:56", "two digits");
   });
 
+  Qunit.test("formatChapterStr", function (assert) {
+    assert.equal(formatChapterStr(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899"), "TEST_STRING"), "34:56 - TEST_STRING", "format a chapter line");
+  });
+
   Qunit.start();
   return QUnitGS2.getHtml();
 }
