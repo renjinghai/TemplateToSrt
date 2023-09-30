@@ -60,7 +60,7 @@ function myFunction() {
     dspDoc.getBody().appendParagraph(chapterStr);
 
     // subtitle
-    srtGame(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
+    srtABall(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
     srtInterval(++srtCounter, srtDoc, end, isTheLastBall, nexStart, yScore, oScore);
   }
 }
@@ -88,7 +88,17 @@ function formatChapterStr(date, text) {
   return `${timeString} - ${text}`;
 }
 
-function srtGame(counter, srtDoc, start, end, yScore, oScore) {
+// subtitle for a ball in game.
+// The start is the begginging timestamp of a ball.
+// The end is the end timestamp of a ball.
+// The score is the score before this ball.
+// format
+// line1: counter
+// line2: timestamp
+// line3: Yoyo score
+// line4: Opponent score
+// line5: new line
+function srtABall(counter, srtDoc, start, end, yScore, oScore) {
   // first line: counter
   srtDoc.getBody().appendParagraph(counter.toString());
 
@@ -110,6 +120,15 @@ function srtGame(counter, srtDoc, start, end, yScore, oScore) {
   srtDoc.getBody().appendParagraph("");
 }
 
+// subtitle for the interval between 2 balls.
+// The score is the lastest socre in this round.
+// format
+// line1: counter
+// line2: timestamp
+// line3: next ball start time or winner if it is the last ball
+// line4: Yoyo score
+// line5: Opponent score
+// line6: new line
 function srtInterval(counter, srtDoc, end, isTheLastBall, nextStart, yScore, oScore) {
   // first line: counter
   srtDoc.getBody().appendParagraph(counter.toString());
@@ -120,12 +139,14 @@ function srtInterval(counter, srtDoc, end, isTheLastBall, nextStart, yScore, oSc
   var timeString = `${prevEndTimeString} --> ${nextStartTimeString}`;
   srtDoc.getBody().appendParagraph(timeString);
 
-  // third line: next ball or winner
-  // not the last ball
+  // third line: next ball start time or winner
+  // not the last ball then show the next ball start time
   if (!isTheLastBall) {
     var nextStartString = `Next ball: ${formatDateMS(nextStart)}`;
     srtDoc.getBody().appendParagraph(nextStartString);
-  } else {
+  }
+  // the last ball then show the winner
+  else {
     var winner;
     if (yScore < oScore) {
       winner = OPPONENT;
