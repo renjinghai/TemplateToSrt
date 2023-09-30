@@ -78,6 +78,7 @@ function formatDateMS(date) {
   return `${paddedMinute}:${paddedSecond}`;
 }
 
+// add addtional zero as the prefix
 function padZero(number, totalLength) {
   return number.toString().padStart(totalLength, '0');
 }
