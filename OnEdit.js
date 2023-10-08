@@ -1,8 +1,8 @@
 function initSlide() {
     var slide = deleteAndAppendSlide();
     display(slide, "Step 1: onEdit handler", 50, 50, 600, 50, 40);
-    display(slide, "Step 2: iPad never auto-lock", 50, 100, 600, 50, 40);
-}
+    const sheetName = SpreadsheetApp.getActiveSpreadsheet().getName();
+    display(slide, sheetName, 50, 100, 600, 50, 40);}
 
 /**
 * The event handler triggered when editing the spreadsheet.
