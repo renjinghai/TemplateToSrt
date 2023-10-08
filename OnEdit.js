@@ -1,8 +1,31 @@
-function initSlide() {
-    var slide = deleteAndAppendSlide();
-    display(slide, "Step 1: onEdit handler", 50, 50, 600, 50, 40);
+const ON_EDIT_FUNCTION_NAME = "onEdit";
+
+// it will create the onEdit trigger when neceesary and initalize the scoreboard.
+function createEditTrigger() {
+    if (!hasOnEditTrigger()) {
+        ScriptApp.newTrigger(ON_EDIT_FUNCTION_NAME)
+            .forSpreadsheet(SpreadsheetApp.getActive())
+            .onEdit()
+            .create();
+    }
+
+    const slide = deleteAndAppendSlide();
+    //display(slide, "Step 1: onEdit handler", 50, 50, 600, 50, 40);
     const sheetName = SpreadsheetApp.getActiveSpreadsheet().getName();
-    display(slide, sheetName, 50, 100, 600, 50, 40);}
+    display(slide, sheetName, 50, 100, 600, 50, 40);
+}
+
+function hasOnEditTrigger() {
+    // Loop over all triggers.
+    const allTriggers = ScriptApp.getProjectTriggers();
+    for (let index = 0; index < allTriggers.length; index++) {
+        if (allTriggers[index].getHandlerFunction() == ON_EDIT_FUNCTION_NAME) {
+            return true;
+        }
+
+    }
+    return false;
+}
 
 /**
 * The event handler triggered when editing the spreadsheet.
