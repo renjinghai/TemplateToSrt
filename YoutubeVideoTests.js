@@ -1,3 +1,4 @@
+// http://qunitgs2.com/
 // Optional for easier use.
 var Qunit = QUnitGS2.QUnit;
 
