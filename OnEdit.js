@@ -1,6 +1,4 @@
 const ON_EDIT_FUNCTION_NAME = "onEdit";
-
-// it will create the onEdit trigger when neceesary and initalize the scoreboard.
 function createEditTrigger() {
     if (!hasOnEditTrigger()) {
         ScriptApp.newTrigger(ON_EDIT_FUNCTION_NAME)
