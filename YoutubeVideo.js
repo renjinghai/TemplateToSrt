@@ -1,13 +1,9 @@
 // generate srt and dsp files from the active sheet.
 function myFunction() {
     var sheet = SpreadsheetApp.getActiveSheet();
-    var docName = `${SpreadsheetApp.getActiveSpreadsheet().getName()}_${sheet.getName()}`;
-    var srtDocName = `${docName}_srt`;
-    var srtDoc = DocumentApp.create(srtDocName);
-    Logger.log(srtDoc.getName());
-    var dspDocName = `${docName}_dsp`;
-    var dspDoc = DocumentApp.create(dspDocName);
-    Logger.log(dspDoc.getName());
+    var docNamePrefix = `${SpreadsheetApp.getActiveSpreadsheet().getName()}_${sheet.getName()}`;
+    var srtDoc = generateSrtDoc(docNamePrefix);
+    var dspDoc = generateDspDoc(docNamePrefix);
 
     var startCol = getCol(sheet, START_HEADER);
     var endCol = getCol(sheet, END_HEADER);
@@ -40,6 +36,20 @@ function myFunction() {
         // subtitle
         srtABall(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
         srtInterval(++srtCounter, srtDoc, end, isTheLastBall, nexStart, yScore, oScore);
+    }
+
+    function generateDspDoc() {
+        var dspDocName = `${docNamePrefix}_dsp`;
+        var dspDoc = DocumentApp.create(dspDocName);
+        Logger.log(dspDoc.getName());
+        return dspDoc;
+    }
+
+    function generateSrtDoc() {
+        var srtDocName = `${docNamePrefix}_srt`;
+        var srtDoc = DocumentApp.create(srtDocName);
+        Logger.log(srtDoc.getName());
+        return srtDoc;
     }
 }
 
