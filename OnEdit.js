@@ -92,15 +92,16 @@ function onEdit(e) {
         const scoreTop = nameTop + nameHeight;
         const scoreHeight = width;
         const serveTop = scoreTop + scoreHeight;
-        const symbolWidth = nameHeight;
+        const symbolWidth = 80;
+        const symbolHeight = 80;
         display(slide, YOYO, yLeft, nameTop, width, nameHeight, 40);
         display(slide, yScore, yLeft, scoreTop, width, scoreHeight, 240);
-        display(slide, yWonAPointSymbol, yLeft + width - nameHeight, nameTop + nameHeight, symbolWidth, nameHeight, 40);
+        display(slide, yWonAPointSymbol, yLeft + width - symbolHeight, nameTop + nameHeight, symbolWidth, symbolHeight, 100);
         display(slide, yServe, yLeft, serveTop, width, nameHeight, 40);
 
         display(slide, OPPONENT, oLeft, nameTop, width, nameHeight, 40);
         display(slide, oScore, oLeft, scoreTop, width, scoreHeight, 240);
-        display(slide, oWonAPointSymbol, oLeft + width - nameHeight, nameTop + nameHeight, symbolWidth, nameHeight, 40);
+        display(slide, oWonAPointSymbol, oLeft + width - symbolHeight, nameTop + nameHeight, symbolWidth, symbolHeight, 100);
         display(slide, oServe, oLeft, serveTop, width, nameHeight, 40);
 
         presentation.saveAndClose();
