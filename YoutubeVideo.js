@@ -55,7 +55,7 @@ function myFunction() {
         // subtitle
         srtABall(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
         if (end && nexStart) {
-            srtInterval(++srtCounter, srtDoc, end, isTheLastBall, nexStart, yScore, oScore);
+            srtInterval(++srtCounter, srtDoc, end, nexStart, yScore, oScore);
         }
     }
 
@@ -111,11 +111,10 @@ function srtABall(counter, srtDoc, start, end, yScore, oScore) {
 // format
 // line1: counter
 // line2: timestamp
-// line3: next ball start time or winner if it is the last ball
-// line4: Yoyo score
-// line5: Opponent score
-// line6: new line
-function srtInterval(counter, srtDoc, end, isTheLastBall, nextStart, yScore, oScore) {
+// line3: Yoyo score
+// line4: Opponent score
+// line5: new line
+function srtInterval(counter, srtDoc, end, nextStart, yScore, oScore) {
     // first line: counter
     srtDoc.getBody().appendParagraph(counter.toString());
 
@@ -125,29 +124,11 @@ function srtInterval(counter, srtDoc, end, isTheLastBall, nextStart, yScore, oSc
     var timeString = `${prevEndTimeString} --> ${nextStartTimeString}`;
     srtDoc.getBody().appendParagraph(timeString);
 
-    // third line: next ball start time or winner
-    // not the last ball then show the next ball start time
-    if (!isTheLastBall) {
-        var nextStartString = `Next ball: ${formatDateMS(nextStart)}`;
-        srtDoc.getBody().appendParagraph(nextStartString);
-    }
-
-    // the last ball then show the winner
-    else {
-        var winner;
-        if (yScore < oScore) {
-            winner = OPPONENT;
-        } else {
-            winner = YOYO;
-        }
-        srtDoc.getBody().appendParagraph(`${winner} Win`);
-    }
-
-    // fourth line: yoyo score
+    // third line: yoyo score
     var yNewScoreString = `${YOYO} ${yScore}`;
     srtDoc.getBody().appendParagraph(yNewScoreString);
 
-    // fifth line: opponent score
+    // fourth line: opponent score
     var oNewScoreString = `${OPPONENT} ${oScore}`;
     srtDoc.getBody().appendParagraph(oNewScoreString);
 
