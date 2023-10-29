@@ -1,5 +1,8 @@
+const INITIAL_TIME_STAMP = new Date(2023, 9, 1, 23, 40, 1);
+
 // generate srt and dsp files from the active sheet.
 function myFunction() {
+    Logger.log("INITIAL_TIME_STAMP: " + INITIAL_TIME_STAMP);
     var sheet = SpreadsheetApp.getActiveSheet();
     var docNamePrefix = `${SpreadsheetApp.getActiveSpreadsheet().getName()}_${sheet.getName()}`;
     var srtDoc = generateSrtDoc(docNamePrefix);
@@ -7,6 +10,7 @@ function myFunction() {
 
     var startCol = getCol(sheet, START_HEADER);
     var endCol = getCol(sheet, END_HEADER);
+    var timeStampCol = getCol(sheet, TIME_STAMP_HEADER);
     var categoryCol = getCol(sheet, CATEGORY_HEADER);
 
     var data = sheet.getDataRange().getValues();
@@ -15,9 +19,23 @@ function myFunction() {
     dspDoc.getBody().appendParagraph("Timecodes");
     var ball = 0;
     // skip header
-    for (var i = 1; data[i][startCol] && i < data.length; i++) {
+    for (var i = 1; data[i][timeStampCol] && i < data.length; i++) {
         var start = data[i][startCol];
+        Logger.log("start from sheets: " + start);
         var end = data[i][endCol];
+        Logger.log("end from sheets: " + end);
+        Logger.log(end);
+
+        if (!start || !end) {
+            var curTimeStamp = data[i][timeStampCol];
+            var isTheFirstBall = i == 1;
+            var prevTimeStamp = isTheFirstBall ? INITIAL_TIME_STAMP : data[i - 1][timeStampCol];
+            start = dateFromDifference(INITIAL_TIME_STAMP, prevTimeStamp);
+            Logger.log("start from time stamp: " + start);
+            end = dateFromDifference(INITIAL_TIME_STAMP, curTimeStamp);
+            Logger.log("end from time stamp: " + end);
+        }
+
         var category = data[i][categoryCol];
         var yScore = data[i][YOYO_SCORE_COL];
         var oScore = data[i][OPPONENT_SCORE_COL];
@@ -25,6 +43,7 @@ function myFunction() {
         var prevYScore = data[i - 1][YOYO_SCORE_COL];
         var prevOScore = data[i - 1][OPPONENT_SCORE_COL];
 
+        // TODO: fix it for time stamp
         var isTheLastBall = !(data[i + 1][startCol]);
         var nexStart = isTheLastBall ? END_OF_THE_DAY : data[i + 1][startCol];
 
@@ -35,7 +54,9 @@ function myFunction() {
 
         // subtitle
         srtABall(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
-        srtInterval(++srtCounter, srtDoc, end, isTheLastBall, nexStart, yScore, oScore);
+        if (end && nexStart) {
+            srtInterval(++srtCounter, srtDoc, end, isTheLastBall, nexStart, yScore, oScore);
+        }
     }
 
     function generateDspDoc() {
@@ -157,3 +178,31 @@ function padZero(number, totalLength) {
     return number.toString().padStart(totalLength, '0');
 }
 
+function dateFromDifference(start, end) {
+    var [day, hour, minute, second] = timeDifference(start, end);
+    var year = start.getFullYear();
+    var month = start.getMonth();
+    return new Date(year, month, day, hour, minute, second);
+}
+
+function timeDifference(start, end) {
+    var difference = end.getTime() - start.getTime();
+
+    var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+    difference -= daysDifference * 1000 * 60 * 60 * 24
+
+    var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
+    difference -= hoursDifference * 1000 * 60 * 60
+
+    var minutesDifference = Math.floor(difference / 1000 / 60);
+    difference -= minutesDifference * 1000 * 60
+
+    var secondsDifference = Math.floor(difference / 1000);
+
+    return [
+        daysDifference,
+        hoursDifference,
+        minutesDifference,
+        secondsDifference
+    ];
+}
