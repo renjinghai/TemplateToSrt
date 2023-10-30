@@ -16,27 +16,27 @@ function myFunction() {
     var ball = 0;
     // skip header
     for (var i = 1; data[i][startCol] && i < data.length; i++) {
+        var isTheFirstBall = (i == 1);
+        var isTheLastBall = !(data[i + 1][startCol]);
         var start = data[i][startCol];
-        var end = data[i][endCol];
         var category = data[i][categoryCol];
+
         var yScore = data[i][YOYO_SCORE_COL];
         var oScore = data[i][OPPONENT_SCORE_COL];
-
         var prevYScore = data[i - 1][YOYO_SCORE_COL];
         var prevOScore = data[i - 1][OPPONENT_SCORE_COL];
-
-        var isTheLastBall = !(data[i + 1][startCol]);
-        var nexStart = isTheLastBall ? END_OF_THE_DAY : data[i + 1][startCol];
+        var prevEnd = (isTheFirstBall ? START_OF_THE_DAY : data[i - 1][endCol]);
+        var end = data[i][endCol];
 
         //Chapter in description
         ball++;
-        var chapterStr = formatChapterStr(i == 1 ? START_OF_THE_DAY : start, `Ball${ball} ${category}`);
+        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `Ball${ball} ${category}`);
         dspDoc.getBody().appendParagraph(chapterStr);
 
         // subtitle
-        srtABall(++srtCounter, srtDoc, start, end, prevYScore, prevOScore);
-        if (end && nexStart) {
-            srtInterval(++srtCounter, srtDoc, end, nexStart, yScore, oScore);
+        subtitle(++srtCounter, srtDoc, prevEnd, end, prevYScore, prevOScore);
+        if (isTheLastBall) {
+            subtitle(++srtCounter, srtDoc, end, END_OF_THE_DAY, yScore, oScore);
         }
     }
 
@@ -55,17 +55,13 @@ function myFunction() {
     }
 }
 
-// subtitle for a ball in game.
-// The start is the begginging timestamp of a ball.
-// The end is the end timestamp of a ball.
-// The score is the score before this ball.
 // format
 // line1: counter
 // line2: timestamp
 // line3: Yoyo score
 // line4: Opponent score
 // line5: new line
-function srtABall(counter, srtDoc, start, end, yScore, oScore) {
+function subtitle(counter, srtDoc, start, end, yScore, oScore) {
     // first line: counter
     srtDoc.getBody().appendParagraph(counter.toString());
 
@@ -87,56 +83,27 @@ function srtABall(counter, srtDoc, start, end, yScore, oScore) {
     srtDoc.getBody().appendParagraph("");
 }
 
-// subtitle for the interval between 2 balls.
-// The score is the lastest socre in this round.
-// format
-// line1: counter
-// line2: timestamp
-// line3: Yoyo score
-// line4: Opponent score
-// line5: new line
-function srtInterval(counter, srtDoc, end, nextStart, yScore, oScore) {
-    // first line: counter
-    srtDoc.getBody().appendParagraph(counter.toString());
-
-    // second line: timestamp
-    var nextStartTimeString = formatDateHMS(nextStart);
-    var prevEndTimeString = formatDateHMS(end);
-    var timeString = `${prevEndTimeString} --> ${nextStartTimeString}`;
-    srtDoc.getBody().appendParagraph(timeString);
-
-    // third line: yoyo score
-    var yNewScoreString = `${YOYO} ${yScore}`;
-    srtDoc.getBody().appendParagraph(yNewScoreString);
-
-    // fourth line: opponent score
-    var oNewScoreString = `${OPPONENT} ${oScore}`;
-    srtDoc.getBody().appendParagraph(oNewScoreString);
-
-    // last line: new line
-    srtDoc.getBody().appendParagraph("");
-}
 // The format is "minute:second - text".
-
 function formatChapterStr(date, text) {
     var timeString = formatDateMS(date);
     return `${timeString} - ${text}`;
 }
-// no padZero. It is used for srt.
 
+// no padZero. It is used for srt.
 function formatDateHMS(date) {
     return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
-// with padZero. Padding is required by YouTube chapter.
 
+// with padZero. Padding is required by YouTube chapter.
 function formatDateMS(date) {
     var paddedMinute = padZero(date.getMinutes(), 2);
     var paddedSecond = padZero(date.getSeconds(), 2);
     return `${paddedMinute}:${paddedSecond}`;
 }
-// add addtional zero as the prefix
 
+// add addtional zero as the prefix
 function padZero(number, totalLength) {
     return number.toString().padStart(totalLength, '0');
 }
 
+//
