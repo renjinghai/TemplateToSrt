@@ -96,7 +96,7 @@ function formatDateHMS(date) {
 
 // with padZero. Padding is required by YouTube chapter.
 function formatDateMS(date) {
-    var paddedMinute = padZero(date.getMinutes(), 2);
+    var paddedMinute = padZero(date.getMinutes(), 1);
     var paddedSecond = padZero(date.getSeconds(), 2);
     return `${paddedMinute}:${paddedSecond}`;
 }
