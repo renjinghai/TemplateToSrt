@@ -39,7 +39,7 @@ function myFunction() {
 
         
         //Chapter in description
-        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `R${round}Ball${ball} ${category}`);
+        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `R${round}B${ball} ${category}`);
         dspDoc.getBody().appendParagraph(chapterStr);
 
         // subtitle
