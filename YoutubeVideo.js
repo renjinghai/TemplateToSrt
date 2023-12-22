@@ -14,6 +14,8 @@ function myFunction() {
 
     dspDoc.getBody().appendParagraph("Timecodes");
     var round = 0;
+    var prevRoundYScores = [];
+    var prevRoundOScores = [];
     // skip header
     for (var i = 1; i < data.length && data[i][startCol]; i++) {
         var ballNumberAndServer = data[i][SERVE_COL];
@@ -21,6 +23,7 @@ function myFunction() {
         if (ball == 1) {
           round++;
         }
+
         var isTheFirstBall = (i == 1);
         var isTheLastBall = (i == data.length-1);
 
@@ -34,14 +37,24 @@ function myFunction() {
         var prevEnd = (isTheFirstBall ? START_OF_THE_DAY : data[i - 1][endCol]);
         var end = data[i][endCol];
 
+        
         //Chapter in description
         var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `R${round}Ball${ball} ${category}`);
         dspDoc.getBody().appendParagraph(chapterStr);
 
         // subtitle
-        subtitle(++srtCounter, srtDoc, prevEnd, end, prevYScore, prevOScore);
+        subtitle(++srtCounter, srtDoc, prevEnd, end, prevYScore, prevOScore, prevRoundYScores, prevRoundOScores);
         if (isTheLastBall) {
-            subtitle(++srtCounter, srtDoc, end, END_OF_THE_DAY, yScore, oScore);
+            subtitle(++srtCounter, srtDoc, end, END_OF_THE_DAY, yScore, oScore, prevRoundYScores, prevRoundOScores);
+        }
+
+        if (ball == 1) {
+          // not the first round
+          if (i != 1) {
+            // push the scores
+            prevRoundYScores.push(prevYScore);
+            prevRoundOScores.push(prevOScore);
+          }
         }
     }
 
@@ -66,7 +79,7 @@ function myFunction() {
 // line3: Yoyo score
 // line4: Opponent score
 // line5: new line
-function subtitle(counter, srtDoc, start, end, yScore, oScore) {
+function subtitle(counter, srtDoc, start, end, yScore, oScore, prevRoundYScores, prevRoundOScores) {
     // first line: counter
     srtDoc.getBody().appendParagraph(counter.toString());
 
@@ -78,17 +91,32 @@ function subtitle(counter, srtDoc, start, end, yScore, oScore) {
 
     // third line: yoyo score
     var yPaddedScore = padZero(yScore, 2);
-    var yScoreString = `${YOYO} ${yPaddedScore}`;
+    var yPrevScores = formatPreviousScores(prevRoundYScores);
+    var yScoreString = `${YOYO} ${yPrevScores}${yPaddedScore}`;
     srtDoc.getBody().appendParagraph(yScoreString);
 
     // fourth line: opponent score
     var oPaddedScore = padZero(oScore, 2);
-    var oScoreString = `${OPPONENT} ${oPaddedScore}`;
+    var oPrevScores = formatPreviousScores(prevRoundOScores);
+    var oScoreString = `${OPPONENT} ${oPrevScores}${oPaddedScore}`;
     srtDoc.getBody().appendParagraph(oScoreString);
 
     // last line: new line
     srtDoc.getBody().appendParagraph("");
 }
+
+// e.g. 11 09 11 13
+function formatPreviousScores(scores) {
+  let text = "";
+  for (let i = 0; i < scores.length; i++) {
+    let score = scores[i];
+    let paddedScore = padZero(score, 2);
+    text += paddedScore;
+    text += ' ';
+  }
+  return text;
+}
+
 
 // The format is "minute:second - text".
 function formatChapterStr(date, text) {
