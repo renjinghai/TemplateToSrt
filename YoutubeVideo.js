@@ -13,11 +13,17 @@ function myFunction() {
     var srtCounter = 0;
 
     dspDoc.getBody().appendParagraph("Timecodes");
-    var ball = 0;
+    var round = 0;
     // skip header
-    for (var i = 1; data[i][startCol] && i < data.length; i++) {
+    for (var i = 1; i < data.length && data[i][startCol]; i++) {
+        var ballNumberAndServer = data[i][SERVE_COL];
+        var ball = ballNumberAndServer.slice(0, -1);
+        if (ball == 1) {
+          round++;
+        }
         var isTheFirstBall = (i == 1);
-        var isTheLastBall = !(data[i + 1][startCol]);
+        var isTheLastBall = (i == data.length-1);
+
         var start = data[i][startCol];
         var category = data[i][categoryCol];
 
@@ -29,8 +35,7 @@ function myFunction() {
         var end = data[i][endCol];
 
         //Chapter in description
-        ball++;
-        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `Ball${ball} ${category}`);
+        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `R${round}Ball${ball} ${category}`);
         dspDoc.getBody().appendParagraph(chapterStr);
 
         // subtitle
