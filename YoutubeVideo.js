@@ -77,11 +77,13 @@ function subtitle(counter, srtDoc, start, end, yScore, oScore) {
     srtDoc.getBody().appendParagraph(timeString);
 
     // third line: yoyo score
-    var yScoreString = `${YOYO} ${yScore}`;
+    var yPaddedScore = padZero(yScore, 2);
+    var yScoreString = `${YOYO} ${yPaddedScore}`;
     srtDoc.getBody().appendParagraph(yScoreString);
 
     // fourth line: opponent score
-    var oScoreString = `${OPPONENT} ${oScore}`;
+    var oPaddedScore = padZero(oScore, 2);
+    var oScoreString = `${OPPONENT} ${oPaddedScore}`;
     srtDoc.getBody().appendParagraph(oScoreString);
 
     // last line: new line

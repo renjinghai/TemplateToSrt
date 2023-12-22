@@ -12,8 +12,8 @@ const YOYO_SCORE_COL = 1;
 const OPPONENT_SCORE_COL = 2;
 
 const LAST_ROW = 40;
-const YOYO = "Yueran"
-const OPPONENT = "Opponent";
+const YOYO = "悠悠"
+const OPPONENT = "对手";
 const START_OF_THE_DAY = new Date("Sat Dec 30 00:00:00 GMT-08:00 1899");
 const END_OF_THE_DAY = new Date("Sat Dec 30 00:59:00 GMT-08:00 1899");
 const SLIDES_ID = "1Pa6jWcdUNgISV_R2eVddov0qz1IkMm2zWDI7L0-DNas";
