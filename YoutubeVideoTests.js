@@ -29,7 +29,8 @@ function doGet() {
   });
 
   Qunit.test("formatChapterStr", function (assert) {
-    assert.equal(formatChapterStr(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899"), "TEST_STRING"), "34:56 - TEST_STRING", "format a chapter line");
+    assert.equal(formatChapterStr(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899"), "TEST_STRING1", false), "34:56 - TEST_STRING1", "format a chapter line");
+    assert.equal(formatChapterStr(new Date("Sat Dec 30 12:34:56 GMT-08:00 1899"), "TEST_STRING2", true), "TEST_STRING2", "format a missing chapter line");
   });
 
   Qunit.start();

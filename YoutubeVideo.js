@@ -8,6 +8,7 @@ function myFunction() {
     var startCol = getCol(sheet, START_HEADER);
     var endCol = getCol(sheet, END_HEADER);
     var categoryCol = getCol(sheet, CATEGORY_HEADER);
+    var durationCol = getCol(sheet, DURATION_HEADER);
 
     var data = sheet.getDataRange().getValues();
     var srtCounter = 0;
@@ -39,7 +40,9 @@ function myFunction() {
 
         
         //Chapter in description
-        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `R${round}B${ball} ${category}`);
+        var duration = data[i][durationCol];
+        var missing = (0 == duration);
+        var chapterStr = formatChapterStr(isTheFirstBall ? START_OF_THE_DAY : start, `R${round}B${ball} ${category}`,missing);
         dspDoc.getBody().appendParagraph(chapterStr);
 
         // subtitle
@@ -119,9 +122,14 @@ function formatPreviousScores(scores) {
 
 
 // The format is "minute:second - text".
-function formatChapterStr(date, text) {
+// If missing, "text".
+function formatChapterStr(date, text, missing) {
     var timeString = formatDateMS(date);
-    return `${timeString} - ${text}`;
+    if (missing) {
+      return text;
+    } else {
+      return `${timeString} - ${text}`;
+    }
 }
 
 // no padZero. It is used for srt.

@@ -5,6 +5,7 @@ const YOYO_WON_A_POINT_HEADER = "Y得分";
 const OPPONENT_WON_A_POINT_HEADER = "O得分";
 const CATEGORY_HEADER = "Category";
 const TIME_STAMP_HEADER = "time stamp";
+const DURATION_HEADER = "duration";
 
 // columns
 const SERVE_COL = 0;
